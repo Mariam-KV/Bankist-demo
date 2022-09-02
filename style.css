@@ -27,6 +27,8 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  flex-wrap: wrap;
   padding: 0 2rem;
 }
 
@@ -95,11 +97,14 @@ nav {
 }
 .app2 {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 
   gap: 2rem;
 }
 @media (max-width: 960px) {
+  nav {
+    padding: 0;
+  }
   .app2 {
     max-width: 600px;
     margin: 0 auto;
@@ -188,6 +193,8 @@ nav {
 }
 .summary {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: baseline;
   padding: 0 0.3rem;
 }
@@ -226,16 +233,38 @@ nav {
   border-radius: 1rem;
   padding: 3rem 4rem;
   color: #333;
+
   margin-bottom: 20px;
+}
+.notification {
+  padding: 5% 20px;
+  box-shadow: 1px 2px 4px 5px rgb(184, 184, 184);
+
+  max-width: 600px;
+  margin: 10% auto;
+  text-align: center;
+}
+h1 {
+  font-size: 35px;
+}
+li {
+  font-size: 22px;
+}
+.title1 {
+  padding: 10px 0;
+  font-size: 30px;
+  font-weight: 400;
+}
+.add-gradient {
+  background: linear-gradient(to top left, #39b385, #9be15d);
+  padding: 1rem 2.5rem;
+  clip-path: polygon(10% 3%, 100% 3%, 90% 100%, 0% 100%);
 }
 @media (max-width: 490px) {
   .form.form--close,
   .form.form--transfer,
   .form.form--loan {
-    grid-template-columns: 0.6fr;
-
-    grid-column: 1/-1;
-    justify-content: center;
+    grid-template-columns: 1fr;
   }
 }
 .operation--transfer {

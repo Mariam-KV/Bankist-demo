@@ -105,7 +105,7 @@ let displaySummary = function (arr) {
     .map(el => (el * arr.interestRate) / 100)
     .filter(el => el >= 1)
     .reduce((acc, el) => acc + el, 0);
-  labelSumInterest.innerHTML = `${interset}&euro;`;
+  labelSumInterest.innerHTML = `${Math.round(interset)}&euro;`;
 };
 let displayUserName = function (accounts) {
   accounts.forEach(account => {
@@ -121,7 +121,7 @@ function updateUI(currentAccount) {
   displayBalance(currentAccount);
   displaySummary(currentAccount);
 }
-
+let notification = document.querySelector('.notification');
 displayUserName(accounts);
 let currentAccount;
 btnLogin.addEventListener('click', function (event) {
@@ -130,6 +130,7 @@ btnLogin.addEventListener('click', function (event) {
     acc => acc.username === inputLoginUsername.value
   );
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    notification.style.display = 'none';
     containerApp.style.opacity = 100;
     labelWelcome.innerHTML = `Good Afternoon, ${
       currentAccount.owner.split(' ')[0]
