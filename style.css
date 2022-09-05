@@ -110,6 +110,7 @@ nav {
     margin: 0 auto;
   }
   .movements__row {
+    padding: 2.25rem 0.5rem !important;
     justify-content: center;
   }
 }
@@ -117,6 +118,7 @@ nav {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
   margin-bottom: 2rem;
 }
@@ -265,6 +267,9 @@ strong {
   clip-path: polygon(10% 3%, 100% 3%, 90% 100%, 0% 100%);
 }
 @media (max-width: 490px) {
+  .balance {
+    justify-content: center;
+  }
   .form.form--close,
   .form.form--transfer,
   .form.form--loan {

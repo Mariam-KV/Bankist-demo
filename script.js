@@ -7,9 +7,22 @@
 // Data
 const account1 = {
   owner: 'Jonas Schmedtmann',
-  movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+  movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
   interestRate: 1.2, // %
   pin: 1111,
+
+  movementsDates: [
+    '2019-11-18T21:31:17.178Z',
+    '2019-12-23T07:42:02.383Z',
+    '2020-01-28T09:15:04.904Z',
+    '2020-04-01T10:17:24.185Z',
+    '2020-05-08T14:11:59.604Z',
+    '2020-05-27T17:01:17.194Z',
+    '2020-07-11T23:36:17.929Z',
+    '2020-07-12T10:51:36.790Z',
+  ],
+  currency: 'EUR',
+  locale: 'pt-PT', // de-DE
 };
 
 const account2 = {
@@ -17,23 +30,22 @@ const account2 = {
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
+
+  movementsDates: [
+    '2019-11-01T13:15:33.035Z',
+    '2019-11-30T09:48:16.867Z',
+    '2019-12-25T06:04:23.907Z',
+    '2020-01-25T14:18:46.235Z',
+    '2020-02-05T16:33:06.386Z',
+    '2020-04-10T14:43:26.374Z',
+    '2020-06-25T18:49:59.371Z',
+    '2020-07-26T12:01:20.894Z',
+  ],
+  currency: 'USD',
+  locale: 'en-US',
 };
 
-const account3 = {
-  owner: 'Steven Thomas Williams',
-  movements: [200, -200, 340, -300, -20, 50, 400, -460],
-  interestRate: 0.7,
-  pin: 3333,
-};
-
-const account4 = {
-  owner: 'Sarah Smith',
-  movements: [430, 1000, 700, 50, 90],
-  interestRate: 1,
-  pin: 4444,
-};
-
-const accounts = [account1, account2, account3, account4];
+const accounts = [account1, account2];
 
 // Elements
 const labelWelcome = document.querySelector('.welcome');
@@ -67,11 +79,17 @@ const inputClosePin = document.querySelector('.form__input--pin');
 const displayMovements = function (mov) {
   containerMovements.innerHTML = '';
   mov.forEach((el, i) => {
+    let now = new Date(currentAccount.movementsDates[i]);
+    let day = `${now.getDay() + 1}`.padStart(2, 0);
+    let month = `${now.getMonth() + 1}`.padStart(2, 0);
+    let year = now.getFullYear();
+    let d = `${day}/${month}/${year}`;
     let type = el > 0 ? 'deposit' : 'withdrawal';
     let html = `<div class="movements__row">
           <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
+          <div class="movements__date"> ${d}</div>
           
           <div class="movements__value">${el} &euro;</div>
         </div>
@@ -95,11 +113,11 @@ let displaySummary = function (arr) {
   let incomes = arr.movements
     .filter(el => el > 0)
     .reduce((acc, el) => acc + el, 0);
-  labelSumIn.innerHTML = `${incomes}&euro;`;
+  labelSumIn.innerHTML = `${Math.round(incomes)}&euro;`;
   let outcomes = arr.movements
     .filter(el => el < 0)
     .reduce((acc, el) => acc + el, 0);
-  labelSumOut.innerHTML = `${Math.abs(outcomes)}&euro;`;
+  labelSumOut.innerHTML = `${Math.round(Math.abs(outcomes))}&euro;`;
   let interset = arr.movements
     .filter(el => el > 0)
     .map(el => (el * arr.interestRate) / 100)
@@ -153,7 +171,8 @@ btnTransfer.addEventListener('click', function (event) {
     receiveAcc?.username != currentAccount.username
   ) {
     //doing the transfer
-
+    currentAccount.movementsDates.push(new Date());
+    receiveAcc.movementsDates.push(new Date());
     currentAccount.movements.push(-amount);
     receiveAcc.movements.push(amount);
     updateUI(currentAccount);
@@ -164,8 +183,12 @@ btnLoan.addEventListener('click', function (event) {
   event.preventDefault();
   let amount = Number(inputLoanAmount.value);
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount / 10)) {
-    currentAccount.movements.push(amount);
-    updateUI(currentAccount);
+    setTimeout(() => {
+      currentAccount.movementsDates.push(new Date());
+      currentAccount.movements.push(amount);
+
+      updateUI(currentAccount);
+    }, 2000);
   }
   inputLoanAmount.value = '';
 });
@@ -208,20 +231,21 @@ let { deposits, withdrawals } = accounts
     },
     { deposits: 0, withdrawals: 0 }
   );
-
-let Dogs = [
-  { owner: ['alice', 'bob'], weight: 22, eats: 250 },
-  { owner: ['matilda'], weight: 8, eats: 200 },
-  { owner: 'Kate', weight: 13, eats: 275 },
-  { owner: 'Kate', weight: 32, eats: 340 },
+let days = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Satuday',
 ];
-Dogs.map(el => (el.recommendedFood = el.weight ** 0.75 * 28));
-let sara = Dogs.find(el => el.owner.includes('Sara'));
+let dateBalance = document.querySelector('.date');
+let now = new Date();
+let day = `${days[now.getDay()]}`.padStart(2, 0);
+let month = `${now.getMonth() + 1}`.padStart(2, 0);
+let year = now.getFullYear();
+let hour = `${now.getHours()}`.padStart(2, 0);
+let minute = `${now.getMinutes()}`.padStart(2, 0);
 
-let allMore = Dogs.map(el => {
-  if (el.recommendedFood > el.eats) {
-    console.log('eats more');
-  }
-});
-
-console.log(allMore);
+dateBalance.innerHTML = `${day}/${month}/${year},${hour}:${minute}`;
