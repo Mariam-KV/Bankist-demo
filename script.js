@@ -72,7 +72,7 @@ const inputTransferAmount = document.querySelector('.form__input--amount');
 const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
-
+let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fr', 'Sat'];
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 
@@ -80,7 +80,7 @@ const displayMovements = function (mov) {
   containerMovements.innerHTML = '';
   mov.forEach((el, i) => {
     let now = new Date(currentAccount.movementsDates[i]);
-    let day = `${now.getDay() + 1}`.padStart(2, 0);
+    let day = `${days[now.getDay()]}`.padStart(2, 0);
     let month = `${now.getMonth() + 1}`.padStart(2, 0);
     let year = now.getFullYear();
     let d = `${day}/${month}/${year}`;
@@ -231,15 +231,7 @@ let { deposits, withdrawals } = accounts
     },
     { deposits: 0, withdrawals: 0 }
   );
-let days = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Satuday',
-];
+
 let dateBalance = document.querySelector('.date');
 let now = new Date();
 let day = `${days[now.getDay()]}`.padStart(2, 0);
